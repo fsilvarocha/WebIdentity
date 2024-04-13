@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WebIdentity.Entities;
+using WebIdentity.Models;
 
 namespace WebIdentity.Context;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) :
         base(options)
@@ -15,6 +17,9 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<RegisterViewModel>().HasNoKey();
+        modelBuilder.Entity<LoginViewModel>().HasNoKey();   
+
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Aluno>().HasData(
@@ -27,4 +32,6 @@ public class AppDbContext : DbContext
                 Curso = "Tecnologia"
             });
     }
+
+public DbSet<WebIdentity.Models.RegisterViewModel> RegisterViewModel { get; set; } = default!;
 }
